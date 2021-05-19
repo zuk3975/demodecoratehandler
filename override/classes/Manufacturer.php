@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-class CustomManufacturer extends Manufacturer
+class Manufacturer extends ManufacturerCore
 {
     /**
      * @var string
