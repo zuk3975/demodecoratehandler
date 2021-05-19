@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\Module\DemoDecorateHandler\Install;
+namespace PrestaShop\Module\DemoOverrideObjectModel\Install;
 
 use Db;
 use Exception;

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-use PrestaShop\Module\DemoDecorateHandler\Install\Installer;
+use PrestaShop\Module\DemoOverrideObjectModel\Install\Installer;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -18,19 +18,19 @@ if (!defined('_PS_VERSION_')) {
 
 require_once __DIR__.'/vendor/autoload.php';
 
-class DemoDecorateHandler extends Module
+class DemoOverrideObjectModel extends Module
 {
     public function __construct()
     {
-        $this->name = 'demodecoratehandler';
+        $this->name = 'demooverrideobjectmodel';
         $this->author = 'PrestaShop';
         $this->version = '1.0.0';
         $this->ps_versions_compliancy = ['min' => '1.7.7.0', 'max' => _PS_VERSION_];
 
         parent::__construct();
 
-        $this->displayName = $this->l('Demo decorate CQRS handler');
-        $this->description = $this->l('Shows example how to decorate any CQRS handler');
+        $this->displayName = $this->l('Demo override object model');
+        $this->description = $this->l('Shows example how to override object model and add custom field to database table');
     }
 
     /**
