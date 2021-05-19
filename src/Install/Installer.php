@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace PrestaShop\Module\DemoDecorateHandler\Install;
 
 use Db;
+use Exception;
 use Module;
+use Tools;
 
 class Installer
 {
@@ -30,6 +32,15 @@ class Installer
             return false;
         }
 
+        $this->installDb($module);
+
+        return true;
+    }
+
+    public function uninstall(Module $module): bool
+    {
+        $this->uninstallDb($module);
+
         return true;
     }
 
@@ -44,30 +55,38 @@ class Installer
      */
     private function registerHooks(Module $module): bool
     {
-        $hooks = [
-            //@todo: register hooks used in module e.g.:
-            'displayHeader',
-            'actionDispatcherBefore'
-        ];
+        $hooks = [];
 
         return (bool) $module->registerHook($hooks);
     }
 
     /**
-     * A helper that executes multiple database queries.
-     *
-     * @param array $queries
-     *
-     * @return bool
+     * @param Module $module
      */
-    private function executeQueries(array $queries): bool
+    private function installDb(Module $module): void
     {
-        foreach ($queries as $query) {
-            if (!Db::getInstance()->execute($query)) {
-                return false;
-            }
-        }
+        $this->executeSqlFromFile($module->getLocalPath() . 'src/Install/install.sql');
+    }
 
-        return true;
+    private function uninstallDb(Module $module): void
+    {
+        $this->executeSqlFromFile($module->getLocalPath() . 'src/Install/uninstall.sql');
+
+    }
+
+    /**
+     * @param string $path
+     */
+    private function executeSqlFromFile(string $path): void
+    {
+        $database = Db::getInstance();
+        $sqlStatements = Tools::file_get_contents($path);
+        $sqlStatements = str_replace(['_DB_PREFIX_', '_MYSQL_ENGINE_'], [_DB_PREFIX_, _MYSQL_ENGINE_], $sqlStatements);
+
+        try {
+            $database->execute($sqlStatements);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 }

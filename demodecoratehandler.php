@@ -22,15 +22,15 @@ class DemoDecorateHandler extends Module
 {
     public function __construct()
     {
-        $this->name = 'skeleton';
+        $this->name = 'demodecoratehandler';
         $this->author = 'PrestaShop';
         $this->version = '1.0.0';
         $this->ps_versions_compliancy = ['min' => '1.7.7.0', 'max' => _PS_VERSION_];
 
         parent::__construct();
 
-        $this->displayName = $this->l('Skeleton');
-        $this->description = $this->l('Skeleton module description');
+        $this->displayName = $this->l('Demo decorate CQRS handler');
+        $this->description = $this->l('Shows example how to decorate any CQRS handler');
     }
 
     /**
@@ -45,5 +45,19 @@ class DemoDecorateHandler extends Module
         $installer = new Installer();
 
         return $installer->install($this);
+    }
+
+    /**
+     * @return bool
+     */
+    public function uninstall()
+    {
+        if (!parent::uninstall()) {
+            return false;
+        }
+
+        $installer = new Installer();
+
+        return $installer->uninstall($this);
     }
 }
